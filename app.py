@@ -55,9 +55,10 @@ def processrequest(req):
     if req.get("result") is None:
         return {}
 
-    if req.get("result").get("action") == "wikiInformation":
+    if req.get("result").get("action") == "yahooWeatherForecast":
+        return processweatheraction(req)
+    elif req.get("result").get("action") == "wikiInformation":
         return processwikiaction(req)
-
     else:
         return {}
 
@@ -77,7 +78,7 @@ def processweatheraction(req):
 # -----------------wiki requests--------starts
 def processwikiaction(req):
     result = makeWikiQuery(req)
-    res = makeWikiWebhookResult(result)
+    res = makeWebhookResult(result)
     return res
 
 
@@ -162,7 +163,7 @@ def makeWebhookResult(data):
     if (units.get('temperature') in ["c", "C"]):
         unitsText = "celcius"
 
-    speech = "Today in " + location.get('city') + ": " + condition.get('text') + \
+    speech = "Today, in " + location.get('city') + ": " + condition.get('text') + \
              ", the temperature is " + condition.get('temp') + " degree " + unitsText
 
     print("Response:")
