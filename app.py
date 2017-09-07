@@ -78,7 +78,7 @@ def processweatheraction(req):
 
 # -----------------wiki requests--------starts
 def processwikiaction(req):
-    result = makeWikiQuery(req)
+    # result = makeWikiQuery(req)
     res = makeWikiWebhookResult("abc")
     return res
 
