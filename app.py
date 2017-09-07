@@ -85,7 +85,7 @@ def processwikiaction(req):
 def makeWikiQuery(req):
     result = req.get("result")
     parameters = result.get("parameters")
-    query = parameters.get("any1")
+    query = parameters.get("any")
     if query is None:
         return None
 
