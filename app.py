@@ -25,7 +25,6 @@ from urllib.error import HTTPError
 import json
 import os
 
-import wikipedia
 
 from flask import Flask
 from flask import request
@@ -73,36 +72,7 @@ def processweatheraction(req):
     return res
 
 
-# -----------------wiki requests--------starts
-def processwikiaction(req):
-    result = makeWikiQuery(req)
-    res = makeWebhookResult(result)
-    return res
 
-
-def makeWikiQuery(req):
-    result = req.get("result")
-    parameters = result.get("parameters")
-    query = parameters.get("any")
-    if query is None:
-        return None
-
-    return wikipedia.summary(query, sentences=2)
-
-
-def makeWikiWebhookResult(wikiResponseText):
-    speech = "According to Wikipedia: " + wikiResponseText
-
-    print("Response:")
-    print(speech)
-
-    return {
-        "speech": speech,
-        "displayText": speech,
-        # "data": data,
-        # "contextOut": [],
-        "source": "wiki "
-    }
 
 
 # -----------------wiki requests--------ends
