@@ -58,7 +58,13 @@ def processrequest(req):
     if req.get("result").get("action") == "yahooWeatherForecast":
         return processweatheraction(req)
     elif req.get("result").get("action") == "wikiInformation":
-        return {"demo"}
+        return {
+            "speech": "Java",
+            "displayText": "Java is a prg lang",
+            # "data": data,
+            # "contextOut": [],
+            "source": "apiai-weather-webhook-sample"
+        }
     else:
         return {}
 
