@@ -90,7 +90,7 @@ def makeWikiQuery(req):
     if query is None:
         return None
 
-    return wikipedia.summary(query, sentences=2)
+    return wikipedia.summary(query, sentences=1)
 
 
 def makeWikiWebhookResult(wikiResponseText):
@@ -151,7 +151,7 @@ def makeWebhookResult(data):
     if (units.get('temperature') in ["c", "C"]):
         unitsText = "celcius"
 
-    speech = "Today - in " + location.get('city') + ": " + condition.get('text') + \
+    speech = "Today in " + location.get('city') + ": " + condition.get('text') + \
              ", the temperature is " + condition.get('temp') + " degree " + unitsText
 
     print("Response:")
