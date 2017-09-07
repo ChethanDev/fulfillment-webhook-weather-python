@@ -78,8 +78,8 @@ def processweatheraction(req):
 
 # -----------------wiki requests--------starts
 def processwikiaction(req):
-    # result = makeWikiQuery(req)
-    res = makeWikiWebhookResult("abc")
+    result = makeWikiQuery(req)
+    res = makeWebhookResult(result)
     return res
 
 
@@ -104,7 +104,7 @@ def makeWikiWebhookResult(wikiResponseText):
         "displayText": speech,
         # "data": data,
         # "contextOut": [],
-        "source": "apiai-weather-webhook-sample"
+        "source": "wiki "
     }
 
 
@@ -165,7 +165,8 @@ def makeWebhookResult(data):
         unitsText = "celcius"
 
     speech = "Today - in " + location.get('city') + ": " + condition.get('text') + \
-             ", the temperature is " + condition.get('temp') + " degree " + unitsText
+             ", the temperature is " + condition.get('temp') + " degree " + unitsText + wikipedia.summary(query,
+                                                                                                          sentences=2)
 
     print("Response:")
     print(speech)
