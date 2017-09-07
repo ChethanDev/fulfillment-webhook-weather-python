@@ -25,6 +25,8 @@ from urllib.error import HTTPError
 import json
 import os
 
+import wikipedia
+
 from flask import Flask
 from flask import request
 from flask import make_response
@@ -48,6 +50,67 @@ def webhook():
     r.headers['Content-Type'] = 'application/json'
     return r
 
+
+def processrequest(req):
+    if req.get("result") is None:
+        return {}
+
+    if req.get("result").get("action") == "yahooWeatherForecast":
+        return processweatheraction(req)
+    elif req.get("result").get("action") == "wikiInformation":
+        return processwikiaction(req)
+    else:
+        return {}
+
+
+def processweatheraction(req):
+    if req.get("result").get("action") != "yahooWeatherForecast":
+        return {}
+
+    baseurl = "https://query.yahooapis.com/v1/public/yql?"
+    yql_query = makeYqlQuery(req)
+    if yql_query is None:
+        return {}
+    yql_url = baseurl + urlencode({'q': yql_query}) + "&format=json"
+    result = urlopen(yql_url).read()
+    data = json.loads(result)
+    res = makeWebhookResult(data)
+    return res
+
+
+# -----------------wiki requests--------starts
+def processwikiaction(req):
+    result = makeWikiQuery(req)
+    res = makeWebhookResult(result)
+    return res
+
+
+def makeWikiQuery(req):
+    result = req.get("result")
+    parameters = result.get("parameters")
+    query = parameters.get("any")
+    if query is None:
+        return None
+
+    return wikipedia.summary(query, sentences=2)
+
+
+def makeWikiWebhookResult(wikiResponseText):
+    speech = "According to Wikipedia: " + wikiResponseText
+
+    print("Response:")
+    print(speech)
+
+    return {
+        "speech": speech,
+        "displayText": speech,
+        # "data": data,
+        # "contextOut": [],
+        "source": "wiki "
+    }
+
+
+# -----------------wiki requests--------ends
 
 def processRequest(req):
     if req.get("result").get("action") != "yahooWeatherForecast":
