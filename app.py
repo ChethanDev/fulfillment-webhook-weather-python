@@ -25,6 +25,7 @@ from urllib.error import HTTPError
 import json
 import os
 
+import wikipedia
 
 from flask import Flask
 from flask import request
