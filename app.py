@@ -55,7 +55,7 @@ def processrequest(req):
     if req.get("result") is None:
         return {}
 
-    if req.get("result").get("action") == "wikiInformation":
+    if req.get("result").get("action") == "yahooWeatherInfo":
         return processweatheraction(req)
     elif req.get("result").get("action") == "a":
         return processwikiaction(req)
