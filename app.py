@@ -16,6 +16,7 @@
 
 from __future__ import print_function
 from future.standard_library import install_aliases
+
 install_aliases()
 
 from urllib.parse import urlparse, urlencode
@@ -80,7 +81,7 @@ def processweatheraction(req):
 def processwikiAction(req):
     result = makeWikiQuery(req)
     if result is None:
-        return None
+        return makeEmptyResult()
     else:
         res = makeWikiWebhookResult(result)
     return res
@@ -122,7 +123,17 @@ def makeWikiWebhookResult(wikiResponseText):
         "displayText": speech,
         # "data": data,
         # "contextOut": [],
-        "source": "wiki "
+        "source": "wiki"
+    }
+
+
+def makeEmptyResult():
+    return {
+        "speech": "Sorry..I didn't get that",
+        "displayText": "Sorry..Unable to fetch result",
+        # "data": data,
+        # "contextOut": [],
+        "source": "wiki"
     }
 
 
