@@ -58,7 +58,7 @@ def processrequest(req):
     if req.get("result").get("action") == "yahooWeatherForecast":
         return processweatheraction(req)
     elif req.get("result").get("action") == "wikiDataInformation":
-        return processwikiaction(req)
+        return processwikiAction(req)
 
     else:
         return {}
@@ -77,9 +77,12 @@ def processweatheraction(req):
 
 
 # -----------------wiki requests--------starts
-def processwikiaction(req):
+def processwikiAction(req):
     result = makeWikiQuery(req)
-    res = makeWikiWebhookResult(result)
+    if result is None:
+        return None
+    else:
+        res = makeWikiWebhookResult(result)
     return res
 
 
@@ -103,7 +106,7 @@ def makeWikiQuery(req):
         wikipedia.set_lang("en")
         response = wikipedia.summary(query, sentences=1)
     except:
-        response = ""
+        response = None
 
     return response
 
