@@ -84,20 +84,28 @@ def processwikiaction(req):
 
 
 def makeWikiQuery(req):
+    response = ""
+
     result = req.get("result")
     parameters = result.get("parameters")
 
     query = ""
 
-    if (parameters.get("any") != ""):
+    if parameters.get("any") != "":
         query = parameters.get("any")
-    elif (parameters.get("given-name") != ""):
+    elif parameters.get("given-name") != "":
         query = parameters.get("given-name")
 
     if query is None:
         return None
 
-    return wikipedia.summary(query, sentences=1)
+    try:
+        wikipedia.set_lang("en")
+        response = wikipedia.summary(query, sentences=1)
+    except:
+        response = ""
+
+    return response
 
 
 def makeWikiWebhookResult(wikiResponseText):
